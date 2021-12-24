@@ -24,7 +24,7 @@ func TestDashboard(t *testing.T) {
 		close(exit)
 	}()
 
-	for i := 0; i < 1024; i++ {
+	for i := 0; i < 128; i++ {
 		put(&Ev{
 			Name: "foo",
 			Attrs: []Attr{

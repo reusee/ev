@@ -14,10 +14,17 @@ func (_ DashboardDef) Evs() Evs {
 	return nil
 }
 
+type EvsOffset int
+
+func (_ DashboardDef) EvsOffset() EvsOffset {
+	return 0
+}
+
 type DashboardRefresh func(screen tcell.Screen)
 
 func (_ DashboardDef) DashboardRefresh(
 	evs Evs,
+	offset EvsOffset,
 	evBox EvBox,
 ) DashboardRefresh {
 	return func(screen tcell.Screen) {
@@ -27,7 +34,7 @@ func (_ DashboardDef) DashboardRefresh(
 		y := height - 1
 
 		// evs
-		for i := len(evs) - 1; i >= 0; i-- {
+		for i := len(evs) - 1 - int(offset); i >= 0; i-- {
 			box := evBox(evs[i])
 			y += box.DrawLeftBottom(screen, x, y, width, height)
 			if y < 0 {

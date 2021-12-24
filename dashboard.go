@@ -77,13 +77,34 @@ func (d *Dashboard) Run() {
 		switch ev := ev.(type) {
 
 		case *tcell.EventResize:
+			d.update(func() {})
 			d.screen.Sync()
 
 		case *tcell.EventKey:
-
 			if ev.Key() == tcell.KeyEsc || ev.Key() == tcell.KeyCtrlC {
 				return
 			}
+
+		case *tcell.EventMouse:
+			d.update(func(
+				evs Evs,
+				offset EvsOffset,
+			) *EvsOffset {
+				buttons := ev.Buttons()
+				if buttons&tcell.WheelUp > 0 {
+					offset++
+					if int(offset) > len(evs)-1 {
+						offset = EvsOffset(len(evs) - 1)
+					}
+					return &offset
+				} else if buttons&tcell.WheelDown > 0 {
+					offset--
+					if offset < 0 {
+						offset = 0
+					}
+				}
+				return &offset
+			})
 
 		}
 
