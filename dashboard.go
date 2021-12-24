@@ -53,8 +53,9 @@ var _ Sink = new(Dashboard)
 func (d *Dashboard) Put(ev *Ev) error {
 	d.scope.MutateCall(func(
 		evs Evs,
-	) Evs {
-		return append(evs, ev)
+	) *Evs {
+		evs = append(evs, ev)
+		return &evs
 	})
 	var sync DashboardSync
 	d.scope.Assign(&sync)

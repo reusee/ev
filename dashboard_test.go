@@ -17,5 +17,19 @@ func TestDashboard(t *testing.T) {
 	defer board.Close()
 
 	put := MustPut(board)
-	_ = put
+	put(&Ev{
+		Name: "foo",
+		Attrs: []Attr{
+			{Name: "a1", Value: 42},
+			{Name: "a2", Value: 99},
+		},
+		Subs: Evs{
+			{
+				Name: "sub1",
+				Attrs: []Attr{
+					{Name: "1", Value: "yes"},
+				},
+			},
+		},
+	})
 }
