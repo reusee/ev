@@ -15,7 +15,6 @@ type DashboardDef struct{}
 type Refresh func(screen tcell.Screen)
 
 func (_ DashboardDef) Refresh(
-	_ dscope.Scope,
 	refresh DashboardRefresh,
 ) Refresh {
 	var once sync.Once
