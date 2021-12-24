@@ -6,7 +6,7 @@ require (
 	github.com/gdamore/tcell v1.4.0
 	github.com/gdamore/tcell/v2 v2.4.0
 	github.com/hashicorp/golang-lru v0.5.4
-	github.com/reusee/dscope v0.0.0-20211224033429-ae8056f4719f
+	github.com/reusee/dscope v0.0.0-20211224085225-00e858fa806e
 	github.com/reusee/e4 v0.0.0-20211111112921-a1e3637d4313
 	github.com/reusee/sb v0.0.0-20211214142515-c9cbed185b71
 )

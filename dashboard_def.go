@@ -3,6 +3,7 @@ package ev
 import (
 	"fmt"
 	"strings"
+	"sync"
 
 	"github.com/gdamore/tcell/v2"
 	lru "github.com/hashicorp/golang-lru"
@@ -10,6 +11,22 @@ import (
 )
 
 type DashboardDef struct{}
+
+type Refresh func(screen tcell.Screen)
+
+func (_ DashboardDef) Refresh(
+	_ dscope.Scope,
+	refresh DashboardRefresh,
+) Refresh {
+	var once sync.Once
+	return func(screen tcell.Screen) {
+		once.Do(func() {
+			screen.Clear()
+			refresh(screen)
+			screen.Show()
+		})
+	}
+}
 
 func (_ DashboardDef) Evs() Evs {
 	return nil

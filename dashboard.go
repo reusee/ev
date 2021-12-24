@@ -52,23 +52,22 @@ func (d *Dashboard) Put(ev *Ev) error {
 			return &evs
 		},
 	)
-	d.refresh()
-	return nil
-}
-
-func (d *Dashboard) refresh() {
-	d.screen.Clear()
 	d.scope.Call(func(
-		refresh DashboardRefresh,
+		refresh Refresh,
 	) {
 		refresh(d.screen)
 	})
-	d.screen.Show()
+	return nil
 }
 
 func (d *Dashboard) Run() {
 	for {
-		d.refresh()
+
+		d.scope.Call(func(
+			refresh Refresh,
+		) {
+			refresh(d.screen)
+		})
 
 		ev := d.screen.PollEvent()
 		switch ev := ev.(type) {
@@ -88,9 +87,7 @@ func (d *Dashboard) Run() {
 			d.scope.MutateCall(func(
 				evs Evs,
 				offset EvsOffset,
-			) (
-				retOffset *EvsOffset,
-			) {
+			) any {
 
 				if buttons&tcell.WheelUp > 0 {
 					offset++
@@ -98,17 +95,18 @@ func (d *Dashboard) Run() {
 						offset = EvsOffset(len(evs) - 1)
 					}
 					return &offset
-				} else if buttons&tcell.WheelDown > 0 {
+				}
+
+				if buttons&tcell.WheelDown > 0 {
 					_, height := d.screen.Size()
 					offset--
 					if offset < EvsOffset(-height+1) {
 						offset = EvsOffset(-height + 1)
 					}
+					return &offset
 				}
 
-				retOffset = &offset
-
-				return
+				return nil
 			})
 
 			// click

@@ -13,6 +13,10 @@ github.com/mattn/go-runewidth v0.0.10 h1:CoZ3S2P7pvtP45xOtBw+/mDL2z0RKI576gSkzRR
 github.com/mattn/go-runewidth v0.0.10/go.mod h1:RAqKPSqVFrSLVXbA8x7dzmKdmGzieGRCM46jaSJTDAk=
 github.com/reusee/dscope v0.0.0-20211224033429-ae8056f4719f h1:jucX+uRkAK+Rl4y46Mi7AWR2sDZCEKbnkW+41PXgg3I=
 github.com/reusee/dscope v0.0.0-20211224033429-ae8056f4719f/go.mod h1:uBIiPBXIelHAzddL42+Rkjx3dkYFOlcBpFImy6iXGDE=
+github.com/reusee/dscope v0.0.0-20211224084048-901286efc2a1 h1:P3bwwzKeeheaSKNjcJLR3clHKzsG90GmajPmMnKLB3M=
+github.com/reusee/dscope v0.0.0-20211224084048-901286efc2a1/go.mod h1:uBIiPBXIelHAzddL42+Rkjx3dkYFOlcBpFImy6iXGDE=
+github.com/reusee/dscope v0.0.0-20211224085225-00e858fa806e h1:+FipEJb1h4kzAcwEQcr+pgjnoXBuq54VGLD223nMaJo=
+github.com/reusee/dscope v0.0.0-20211224085225-00e858fa806e/go.mod h1:uBIiPBXIelHAzddL42+Rkjx3dkYFOlcBpFImy6iXGDE=
 github.com/reusee/e4 v0.0.0-20210823014223-b02406cf2483/go.mod h1:tn7INLQH/YwWai6I0MV227/HgZgagrroPgzfUTLV8No=
 github.com/reusee/e4 v0.0.0-20211111112921-a1e3637d4313 h1:NdolWZRwyEnTsDfOy+bjFhm9jUH6HMgXU5kKbp9v5js=
 github.com/reusee/e4 v0.0.0-20211111112921-a1e3637d4313/go.mod h1:tn7INLQH/YwWai6I0MV227/HgZgagrroPgzfUTLV8No=
