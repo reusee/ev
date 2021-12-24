@@ -6,6 +6,7 @@ import (
 
 	"github.com/gdamore/tcell/v2"
 	lru "github.com/hashicorp/golang-lru"
+	"github.com/reusee/dscope"
 )
 
 type DashboardDef struct{}
@@ -26,21 +27,56 @@ func (_ DashboardDef) DashboardRefresh(
 	evs Evs,
 	offset EvsOffset,
 	evBox EvBox,
+	mutate dscope.Mutate,
+	extraAttrs ShowExtraAttrs,
+	attrsBox AttrsBox,
 ) DashboardRefresh {
 	return func(screen tcell.Screen) {
 
 		width, height := screen.Size()
-		x := 0
-		y := height - 1
+		var handlers ClickHandlers
 
 		// evs
+		x := 0
+		y := height - 1
+		if offset < 0 {
+			y += int(offset)
+			offset = 0
+		}
 		for i := len(evs) - 1 - int(offset); i >= 0; i-- {
-			box := evBox(evs[i])
-			y += box.DrawLeftBottom(screen, x, y, width, height)
+			ev := evs[i]
+			box := evBox(ev)
+			dx, dy := box.DrawLeftBottom(screen, x, y, width, height)
+			y -= dy
 			if y < 0 {
 				break
 			}
+			handlers = append(handlers, ClickHandler{
+				X:      x,
+				Y:      y,
+				Width:  dx,
+				Height: dy,
+				Func: func(
+					mutate dscope.Mutate,
+				) {
+					mutate(func() ShowExtraAttrs {
+						return ev.ExtraAttrs
+					})
+				},
+			})
 		}
+
+		// extra attrs
+		if len(extraAttrs) > 0 {
+			box := attrsBox(extraAttrs)
+			box.Draw(
+				screen,
+				width/2, 0,
+				width, height,
+			)
+		}
+
+		mutate(&handlers)
 
 	}
 }
@@ -98,5 +134,43 @@ func (_ DashboardDef) EvBox(
 		cache.Add(ev, box)
 
 		return box
+	}
+}
+
+type ClickHandler struct {
+	X, Y          int
+	Width, Height int
+	Func          any
+}
+
+type ClickHandlers []ClickHandler
+
+func (_ DashboardDef) ClickHandlers() ClickHandlers {
+	return nil
+}
+
+type ShowExtraAttrs []Attr
+
+func (_ DashboardDef) ShowExtraAttrs() ShowExtraAttrs {
+	return nil
+}
+
+type AttrsBox func(attrs []Attr) BoxSpec
+
+func (_ DashboardDef) AttrsBox(
+	styles Styles,
+) AttrsBox {
+	return func(attrs []Attr) BoxSpec {
+		var rows []RowSpec
+		for _, attr := range attrs {
+			var row RowSpec
+			row.AppendStr(attr.Name, styles.AttrName)
+			row.AppendStr(": ", tcell.StyleDefault)
+			row.AppendStr(fmt.Sprintf("%v", attr.Value), tcell.StyleDefault)
+			rows = append(rows, row)
+		}
+		return BoxSpec{
+			Rows: rows,
+		}
 	}
 }

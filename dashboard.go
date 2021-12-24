@@ -41,15 +41,10 @@ func (d *Dashboard) Close() {
 	d.screen.Fini()
 }
 
-func (d *Dashboard) update(fn any) {
-	d.scope.MutateCall(fn)
-	d.refresh()
-}
-
 var _ Sink = new(Dashboard)
 
 func (d *Dashboard) Put(ev *Ev) error {
-	d.update(
+	d.scope.MutateCall(
 		func(
 			evs Evs,
 		) *Evs {
@@ -57,6 +52,7 @@ func (d *Dashboard) Put(ev *Ev) error {
 			return &evs
 		},
 	)
+	d.refresh()
 	return nil
 }
 
@@ -72,12 +68,12 @@ func (d *Dashboard) refresh() {
 
 func (d *Dashboard) Run() {
 	for {
+		d.refresh()
 
 		ev := d.screen.PollEvent()
 		switch ev := ev.(type) {
 
 		case *tcell.EventResize:
-			d.update(func() {})
 			d.screen.Sync()
 
 		case *tcell.EventKey:
@@ -86,11 +82,16 @@ func (d *Dashboard) Run() {
 			}
 
 		case *tcell.EventMouse:
-			d.update(func(
+			buttons := ev.Buttons()
+
+			// scroll
+			d.scope.MutateCall(func(
 				evs Evs,
 				offset EvsOffset,
-			) *EvsOffset {
-				buttons := ev.Buttons()
+			) (
+				retOffset *EvsOffset,
+			) {
+
 				if buttons&tcell.WheelUp > 0 {
 					offset++
 					if int(offset) > len(evs)-1 {
@@ -98,12 +99,35 @@ func (d *Dashboard) Run() {
 					}
 					return &offset
 				} else if buttons&tcell.WheelDown > 0 {
+					_, height := d.screen.Size()
 					offset--
-					if offset < 0 {
-						offset = 0
+					if offset < EvsOffset(-height+1) {
+						offset = EvsOffset(-height + 1)
 					}
 				}
-				return &offset
+
+				retOffset = &offset
+
+				return
+			})
+
+			// click
+			d.scope.Call(func(
+				handlers ClickHandlers,
+			) {
+				if buttons&tcell.Button1 == 0 {
+					return
+				}
+				x, y := ev.Position()
+				for _, handler := range handlers {
+					if x >= handler.X && x <= handler.X+handler.Width &&
+						y >= handler.Y && y <= handler.Y+handler.Height {
+						if handler.Func != nil {
+							d.scope.Call(handler.Func)
+							break
+						}
+					}
+				}
 			})
 
 		}

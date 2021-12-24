@@ -31,6 +31,9 @@ func TestDashboard(t *testing.T) {
 				{Name: "a1", Value: 42},
 				{Name: "a2", Value: i},
 			},
+			ExtraAttrs: []Attr{
+				{Name: "extra", Value: i},
+			},
 			Subs: Evs{
 				{
 					Name: "sub1",

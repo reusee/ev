@@ -40,27 +40,33 @@ type BoxSpec struct {
 	Rows []RowSpec
 }
 
-func (b BoxSpec) Draw(screen tcell.Screen, x, y, width, height int) int {
+func (b BoxSpec) Draw(screen tcell.Screen, x, y, width, height int) (dx, dy int) {
 	originY := y
 	for _, row := range b.Rows {
-		row.Draw(screen, x, y, width, height)
+		n := row.Draw(screen, x, y, width, height)
+		if n > dx {
+			dx = n
+		}
 		if y >= height {
-			return y - originY
+			return dx, y - originY
 		}
 		y++
 	}
-	return y - originY
+	return dx, y - originY
 }
 
-func (b BoxSpec) DrawLeftBottom(screen tcell.Screen, x, y, width, height int) int {
+func (b BoxSpec) DrawLeftBottom(screen tcell.Screen, x, y, width, height int) (dx, dy int) {
 	originY := y
 	for i := len(b.Rows) - 1; i >= 0; i-- {
 		row := b.Rows[i]
-		row.Draw(screen, x, y, width, height)
+		n := row.Draw(screen, x, y, width, height)
+		if n > dx {
+			dx = n
+		}
 		y--
 		if y < 0 {
-			return y - originY
+			return dx, originY - y
 		}
 	}
-	return y - originY
+	return dx, originY - y
 }

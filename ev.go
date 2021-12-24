@@ -1,9 +1,10 @@
 package ev
 
 type Ev struct {
-	Name  string
-	Attrs []Attr
-	Subs  []*Ev
+	Name       string
+	Attrs      []Attr
+	ExtraAttrs []Attr
+	Subs       []*Ev
 }
 
 type Attr struct {
