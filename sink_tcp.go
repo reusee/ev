@@ -56,7 +56,7 @@ func NewTCPClient(ctx context.Context, remote string) (*TCPClient, error) {
 	}, nil
 }
 
-func (t *TCPClient) Put(ev Ev) error {
+func (t *TCPClient) Put(ev *Ev) error {
 	op := NewPutOp(ev)
 	select {
 	case t.ch <- op:
@@ -99,7 +99,7 @@ func NewTCPServer(ctx context.Context, addr string, upstream Sink, errCh chan er
 				defer conn.Close()
 
 				for {
-					var ev Ev
+					var ev *Ev
 					if err := sb.Copy(
 						sb.Decode(conn),
 						sb.Unmarshal(&ev),

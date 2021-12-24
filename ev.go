@@ -10,3 +10,5 @@ type Attr struct {
 	Name  string
 	Value any
 }
+
+type Evs = []*Ev

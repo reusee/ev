@@ -16,5 +16,6 @@ func TestDashboard(t *testing.T) {
 	ce(err)
 	defer board.Close()
 
-	_ = board
+	put := MustPut(board)
+	_ = put
 }

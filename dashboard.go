@@ -44,16 +44,16 @@ func (d *Dashboard) Close() {
 
 type DashboardDef struct{}
 
-func (_ DashboardDef) Evs() []Ev {
+func (_ DashboardDef) Evs() Evs {
 	return nil
 }
 
 var _ Sink = new(Dashboard)
 
-func (d *Dashboard) Put(ev Ev) error {
+func (d *Dashboard) Put(ev *Ev) error {
 	d.scope.MutateCall(func(
-		evs []Ev,
-	) []Ev {
+		evs Evs,
+	) Evs {
 		return append(evs, ev)
 	})
 	var sync DashboardSync
@@ -64,7 +64,7 @@ func (d *Dashboard) Put(ev Ev) error {
 type DashboardSync bool
 
 func (_ DashboardDef) DashboardSync(
-	evs []Ev,
+	evs Evs,
 ) DashboardSync {
 
 	//TODO
