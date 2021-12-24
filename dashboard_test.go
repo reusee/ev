@@ -32,4 +32,6 @@ func TestDashboard(t *testing.T) {
 			},
 		},
 	})
+
+	board.Run()
 }

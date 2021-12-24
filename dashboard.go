@@ -32,9 +32,6 @@ func NewDashboard(ctx context.Context) (*Dashboard, error) {
 	screen.Clear()
 	d.screen = screen
 
-	var sync DashboardSync
-	d.scope.Assign(&sync)
-
 	return d, nil
 }
 
@@ -57,18 +54,30 @@ func (d *Dashboard) Put(ev *Ev) error {
 		evs = append(evs, ev)
 		return &evs
 	})
-	var sync DashboardSync
-	d.scope.Assign(&sync)
+	d.refresh()
 	return nil
 }
 
-type DashboardSync bool
+func (d *Dashboard) refresh() {
+	d.screen.Show()
+}
 
-func (_ DashboardDef) DashboardSync(
-	evs Evs,
-) DashboardSync {
+func (d *Dashboard) Run() {
+	for {
 
-	//TODO
+		ev := d.screen.PollEvent()
+		switch ev := ev.(type) {
 
-	return true
+		case *tcell.EventResize:
+			d.screen.Sync()
+
+		case *tcell.EventKey:
+
+			if ev.Key() == tcell.KeyEsc || ev.Key() == tcell.KeyCtrlC {
+				return
+			}
+
+		}
+
+	}
 }
