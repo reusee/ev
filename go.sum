@@ -8,9 +8,6 @@ github.com/lucasb-eyer/go-colorful v1.0.3 h1:QIbQXiugsb+q10B+MI+7DI1oQLdmnep86tW
 github.com/lucasb-eyer/go-colorful v1.0.3/go.mod h1:R4dSotOR9KMtayYi1e77YzuveK+i7ruzyGqttikkLy0=
 github.com/mattn/go-runewidth v0.0.10 h1:CoZ3S2P7pvtP45xOtBw+/mDL2z0RKI576gSkzRRpdGg=
 github.com/mattn/go-runewidth v0.0.10/go.mod h1:RAqKPSqVFrSLVXbA8x7dzmKdmGzieGRCM46jaSJTDAk=
-github.com/reusee/dscope v0.0.0-20210927163816-996990a3ac8a h1:qHHZresPbG+a+osw6SBfprz+3GHO8LHUzIhqDzKQof4=
-github.com/reusee/dscope v0.0.0-20211223174229-03eca372a38c h1:TUZxp3nYXz6945A8RCbvYeR6YreuWw2l35/msfSJBes=
-github.com/reusee/dscope v0.0.0-20211223174229-03eca372a38c/go.mod h1:uBIiPBXIelHAzddL42+Rkjx3dkYFOlcBpFImy6iXGDE=
 github.com/reusee/dscope v0.0.0-20211224033429-ae8056f4719f h1:jucX+uRkAK+Rl4y46Mi7AWR2sDZCEKbnkW+41PXgg3I=
 github.com/reusee/dscope v0.0.0-20211224033429-ae8056f4719f/go.mod h1:uBIiPBXIelHAzddL42+Rkjx3dkYFOlcBpFImy6iXGDE=
 github.com/reusee/e4 v0.0.0-20210823014223-b02406cf2483/go.mod h1:tn7INLQH/YwWai6I0MV227/HgZgagrroPgzfUTLV8No=
