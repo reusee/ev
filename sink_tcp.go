@@ -21,7 +21,7 @@ func NewTCPClient(ctx context.Context, remote string) (*TCPClient, error) {
 	}
 	dialCtx, cancel := context.WithTimeout(ctx, time.Second*32)
 	defer cancel()
-	conn, err := dialer.DialContext(dialCtx, "net", remote)
+	conn, err := dialer.DialContext(dialCtx, "tcp", remote)
 	if err != nil {
 		return nil, we(err)
 	}
@@ -73,7 +73,7 @@ func (t *TCPClient) Put(ev *Ev) error {
 
 func NewTCPServer(ctx context.Context, addr string, upstream Sink, errCh chan error) error {
 	config := net.ListenConfig{}
-	ln, err := config.Listen(ctx, "net", addr)
+	ln, err := config.Listen(ctx, "tcp", addr)
 	if err != nil {
 		return we(err)
 	}
