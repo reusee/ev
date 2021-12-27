@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"errors"
+	"io"
 
 	"github.com/reusee/ev"
 )
@@ -22,9 +24,15 @@ func main() {
 	errCh := make(chan error, 1)
 	ce(ev.NewTCPServer(ctx, ":9876", board, errCh))
 
-	select {
-	case <-exit:
-	case err := <-errCh:
-		ce(err)
+	for {
+		select {
+		case <-exit:
+			return
+		case err := <-errCh:
+			if errors.Is(err, io.EOF) || errors.Is(err, io.ErrUnexpectedEOF) {
+				break
+			}
+			ce(err)
+		}
 	}
 }
