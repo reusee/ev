@@ -26,7 +26,7 @@ func NewTCPClient(ctx context.Context, remote string) (*TCPClient, error) {
 		return nil, we(err)
 	}
 
-	ch := make(chan PutOp)
+	ch := make(chan PutOp, 1024)
 
 	go func() {
 		for {
