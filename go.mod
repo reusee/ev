@@ -8,7 +8,7 @@ require (
 	github.com/reusee/dscope v0.0.0-20211224085225-00e858fa806e
 	github.com/reusee/e4 v0.0.0-20211111112921-a1e3637d4313
 	github.com/reusee/sb v0.0.0-20211214142515-c9cbed185b71
-	golang.org/x/text v0.3.3
+	golang.org/x/text v0.3.8
 )
 
 require (
